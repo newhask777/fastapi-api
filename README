@@ -1,0 +1,2 @@
+venv/scripts/activate
+fastapi dev app/main.py

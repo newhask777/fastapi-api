@@ -4,16 +4,20 @@ from datetime import date
 from pydantic import BaseModel # For data validation, its like Request and Responce data validation in Laravel
 
 from bookings.router import router as router_bookings
+from users.router import router as router_users
 
 
 app = FastAPI()
 
+
+app.include_router(router_users)
 app.include_router(router_bookings)
+
 
 class HotelsSerachArgs:
    def __init__(
          self,
-         location: str,
+         location: str,  
          date_from: int, 
          date_to: int,
          has_spa: Optional[bool]=False,
