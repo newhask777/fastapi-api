@@ -1,17 +1,16 @@
 from datetime import datetime, timedelta, timezone
 
-from fastapi import HTTPException
-import jwt
 from passlib.context import CryptContext
 from pydantic import EmailStr
 
 from users.dao import UsersDAO
+from config import settings
 
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
-def aware_utcnow():
+def utcnow():
     return datetime.now(timezone.utc)
 
 
@@ -25,10 +24,10 @@ def verify_password(plain_password, hashed_password) -> bool:
 
 def create_access_token(data: dict) -> str:
     to_encode = data.copy()
-    expire = aware_utcnow() + timedelta(minutes=30)
+    expire = utcnow() + timedelta(minutes=30)
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(
-        to_encode, "akjgjfakghkfgahjkhg", "HS256"
+        to_encode, settings.SECRET_KEY, settings.ALGORITHM
     )
     return encoded_jwt
 
@@ -40,4 +39,4 @@ async def authenticate_user(email: EmailStr, password: str):
     return user
 
 
-print(create_access_token({"data": "programmist"}))
+# print(create_access_token({"data": "programmist"}))
