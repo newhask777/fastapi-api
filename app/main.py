@@ -3,8 +3,12 @@ from typing import Optional, Union
 from datetime import date
 from pydantic import BaseModel # For data validation, its like Request and Responce data validation in Laravel
 
+from bookings.router import router as router_bookings
+
 
 app = FastAPI()
+
+app.include_router(router_bookings)
 
 class HotelsSerachArgs:
    def __init__(
