@@ -43,7 +43,7 @@ class BookingDAO(BaseDAO): # Data access object or service or repo
             ).cte("booked_rooms")
 
             get_rooms_left = select((Rooms.quantity - func.count(booked_rooms.c.room_id)).label("rooms_left")).select_from(Rooms).join(
-                booked_rooms, booked_rooms.c.room_id == Rooms.id
+                booked_rooms, booked_rooms.c.room_id == Rooms.id, isouter=True
             ).where(Rooms.id == 1).group_by(
                 Rooms.quantity, booked_rooms.c.room_id
             )
