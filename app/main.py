@@ -44,15 +44,5 @@ def get_hotels(
    return search_ars
 
 
-# Validate Body data types for post request (get from frontend)
-class SBooking(BaseModel):
-   room_id: int
-   date_to: date
-   date_from: date
 
-
-
-@app.post("/bookings") 
-def add_booking(bookings: SBooking):
-   pass
 

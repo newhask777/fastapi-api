@@ -41,3 +41,9 @@ UserPermissionsException = HTTPException(
     status_code=status.HTTP_401_UNAUTHORIZED,
     detail="Permissions error!",
 )
+
+
+RoomCannotBeBooked = HTTPException(
+    status_code=status.HTTP_409_CONFLICT,
+    detail="All rooms are booked!"
+)
