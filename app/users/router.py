@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Depends, Response
 
-from exceptions import IncorectUserEmailOrPasswordException, UserAlreadyExistsException
-from users.dependencies import get_current_admin_user, get_current_user
+from exceptions import IncorrectEmailOrPasswordException, UserAlreadyExistsException
+from users.dependencies import get_current_user
 from users.models import Users
 from users.auth import authenticate_user, create_access_token, get_password_hash
-from users.dao import UsersDAO
+from users.dao import UserDAO
 from users.schemas import SUserAuth
 
 
@@ -28,7 +28,7 @@ async def register_user(user_data: SUserAuth):
 async def login_user(response: Response, user_data: SUserAuth):
     user =  await authenticate_user(user_data.email, user_data.password)
     if not user:
-        raise IncorectUserEmailOrPasswordException
+        raise IncorrectEmailOrPasswordException
     
     access_token = create_access_token({"sub": str(user.id)})
     response.set_cookie("booking_access_token", access_token, httponly=True)
@@ -46,5 +46,5 @@ async def read_users_me(current_user: Users = Depends(get_current_user)):
 
 
 @router.get('/all') 
-async def read_users_all(all_users: Users = Depends(get_current_admin_user)):
-    return await UsersDAO.find_all()
+async def read_users_all(all_users: Users = Depends()):
+    return await UserDAO.find_all()

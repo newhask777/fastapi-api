@@ -4,7 +4,7 @@ import jwt
 from passlib.context import CryptContext
 from pydantic import EmailStr
 
-from users.dao import UsersDAO
+from users.dao import UserDAO
 from config import settings
 
 
@@ -34,7 +34,7 @@ def create_access_token(data: dict) -> str:
 
 
 async def authenticate_user(email: EmailStr, password: str):
-    user = await UsersDAO.find_one_or_none(email=email)
+    user = await UserDAO.find_one_or_none(email=email)
     if not user and not verify_password(password, user.password):
         return None
     return user
